@@ -6,10 +6,10 @@
 
   # IP Address for the host only network, change it to anything you like
   # but please keep it within the IPv4 private network range
-  ip_address = "172.22.22.22"
+  ip_address = "10.1.2.111"
 
   # The project name is base for directories, hostname and alike
-  project_name = "projectname"
+  project_name = "sandbox"
 
   # MySQL and PostgreSQL password - feel free to change it to something
   # more secure (Note: Changing this will require you to update the index.php example file)
@@ -35,14 +35,14 @@
     # Use hostonly network with a static IP Address and enable
     # hostmanager so we can have a custom domain for the server
     # by modifying the host machines hosts file
-    config.hostmanager.enabled = true
-    config.hostmanager.manage_host = true
+    #config.hostmanager.enabled = true
+    #config.hostmanager.manage_host = true
     config.vm.define project_name do |node|
       node.vm.hostname = project_name + ".local"
       node.vm.network :private_network, ip: ip_address
-      node.hostmanager.aliases = [ "www." + project_name + ".local" ]
+      #node.hostmanager.aliases = [ "www." + project_name + ".local" ]
     end
-    config.vm.provision :hostmanager
+    # config.vm.provision :hostmanager
 
     # Make sure that the newest version of Chef have been installed
     config.vm.provision :shell, :inline => "apt-get update -qq && apt-get install make ruby1.9.1-dev --no-upgrade --yes"
