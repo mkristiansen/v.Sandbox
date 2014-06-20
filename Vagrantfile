@@ -32,21 +32,20 @@
     config.vm.synced_folder "./" , "/var/www/" + project_name + "/", :mount_options => ["dmode=777", "fmode=666"]
 
 
-    # Use hostonly network with a static IP Address and enable
-    # hostmanager so we can have a custom domain for the server
-    # by modifying the host machines hosts file
-    #config.hostmanager.enabled = true
-    #config.hostmanager.manage_host = true
+    # Use hostonly network with a static IP Address
     config.vm.define project_name do |node|
       node.vm.hostname = project_name + ".local"
       node.vm.network :private_network, ip: ip_address
-      #node.hostmanager.aliases = [ "www." + project_name + ".local" ]
-    end
-    # config.vm.provision :hostmanager
 
-    # Make sure that the newest version of Chef have been installed
+      # Enable VirtualBox GUI for the VM
+      config.vm.provider :virtualbox do |vb|      
+        vb.gui = true
+      end
+    end
+
+    # Make sure that Chef version 11.6.0 have been installed
     config.vm.provision :shell, :inline => "apt-get update -qq && apt-get install make ruby1.9.1-dev --no-upgrade --yes"
-    config.vm.provision :shell, :inline => "gem install chef --version 11.6.0 --no-rdoc --no-ri --conservative"
+    config.vm.provision :shell, :inline => "gem install chef --version 11.12.8 --no-rdoc --no-ri --conservative"
 
     # Enable and configure chef solo
     config.vm.provision :chef_solo do |chef|
